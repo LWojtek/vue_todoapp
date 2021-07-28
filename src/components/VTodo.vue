@@ -1,7 +1,10 @@
 <template>
     <li class="todo">
         <div class="checkbox__wrapper">
-            <input type="checkbox" @click="markCompleted(todo)">
+            <!-- Tutaj zmienilem troche -->
+            <!-- wytlumacze ci to nastepnym razem ;) -->
+            <input type="checkbox" v-model="checked" />
+
             <div class="checkbox"></div>
              <p class="todo__text">{{ todo.todo }}</p>
         </div>
@@ -16,18 +19,39 @@
     export default {
         name: 'VTodo',
         props: ['todo'],
+
+        data(){
+            return {
+                checked: false
+            }
+        },
+
         methods: {
             removeTodo(todo){
                 this.$store.dispatch('remTodo', todo)                
             },
-            markCompleted(todo) {
-                if (todo.completed) {
-                    this.$store.dispatch('markUncompleted', todo)
+            markCompleted(isCompleted) {
+                if (isCompleted) {
+                    this.$store.dispatch('markUncompleted', this.todo)
                 } else {
-                    this.$store.dispatch('markCompleted', todo)
+                    this.$store.dispatch('markCompleted', this.todo)
                 }
             }
-        }        
+        },
+
+        watch:{
+            checked(newVal){
+                this.markCompleted(!newVal);
+            },
+
+            todo: {
+                deep: true,
+                immediate: true,
+                handler(newVal){
+                    this.checked = newVal.completed;
+                }
+            },
+        }
     }
 </script>
 
