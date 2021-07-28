@@ -22,3 +22,13 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+                if (this.todo){
+                    this.$store.state.todos.push({
+                        todo: this.todo,
+                        id: uuid.v1(),
+                        completed: false
+                    })
+                    this.todo = ''
+                }
